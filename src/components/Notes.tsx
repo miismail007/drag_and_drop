@@ -1,8 +1,9 @@
 import React, { createRef, useEffect, useRef } from 'react'
+import { determineNotesPosition } from '../utils/helperFunctions'
 import Note from './Note'
 
 type NotesObj = {
-    id: number,
+    id: string,
     text: string,
     position: {
         x: number,
@@ -18,7 +19,7 @@ interface NotesType {
 
 function Notes({notes, setNotes} : NotesType) {
     useEffect(() => {
-        const savedNotes: Array<NotesObj> = JSON.parse(localStorage.getItem("notes") || "") || []
+        const savedNotes: Array<NotesObj> = JSON.parse(localStorage.getItem("notes") || JSON.stringify("")) || []
         // const savedNotes: Array<NotesObj> = []
         const updatedNotes = notes.map((note) => {
             const savedNote = savedNotes.find((n) => n.id == note.id)
@@ -66,7 +67,7 @@ function Notes({notes, setNotes} : NotesType) {
 
         }
 
-        const updateNewPosition = (id: number, newPosition: {x: number, y: number}) => {
+        const updateNewPosition = (id: string, newPosition: {x: number, y: number}) => {
             const updatedNotes = notes.map((note: NotesObj) => {
                 return note.id === id ? {...note, position: newPosition} : note
             })
@@ -78,14 +79,7 @@ function Notes({notes, setNotes} : NotesType) {
         document.addEventListener("mouseup", handleMouseUp)
     }
 
-    const determineNotesPosition = () => {
-        const maxX = window.innerWidth - 250
-        const maxY = window.innerHeight - 250
-        return {
-            x: Math.floor(Math.random() * maxX),
-            y: Math.floor(Math.random() * maxY)
-        }
-    }
+    
     return (
         <div>
             {notes.map((note) => 
