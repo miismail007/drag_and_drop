@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { forwardRef, Ref } from 'react'
 
 interface NoteType {
     content : string,
     initialPosition: {
         x: number,
         y: number
-    }
+    },
+    onMouseDown: any
 }
 
-function Note({content, initialPosition, ...props} : NoteType) {
+const Note = forwardRef(({content, initialPosition, ...props} : NoteType, ref:any) => {
   return (
     <div 
         style={{
@@ -21,8 +22,9 @@ function Note({content, initialPosition, ...props} : NoteType) {
             userSelect: "none",
             backgroundColor: "lightyellow"
         }}
+        ref={ref}
         {...props}> 📌 {content}</div>
   )
-}
+})
 
 export default Note
